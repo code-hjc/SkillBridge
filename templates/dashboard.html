@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillBridge | Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        /* =========================
+           DASHBOARD BASE
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Times New Roman", serif;
+            background: #090914;
+            color: #ffffff;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+    width: 240px;
+    background: #11101f;
+    border-right: 1px solid #29253d;
+    padding: 28px 18px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+
+    /* Sidebar scroll */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+        .dashboard-logo {
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-logo span {
+            color: #8b5cf6;
+        }
+
+        .menu-title {
+            color: #77738b;
+            font-size: 12px;
+            margin: 0 12px 12px;
+            text-transform: uppercase;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 13px 15px;
+            margin-bottom: 7px;
+            border-radius: 10px;
+            color: #c7c3d4;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.25s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #241b3d;
+            color: #ffffff;
+        }
+
+        .sidebar a.active {
+            border-left: 3px solid #8b5cf6;
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main-content {
+            margin-left: 240px;
+            width: calc(100% - 240px);
+            padding: 30px 40px;
+        }
+
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .welcome p {
+            margin-top: 7px;
+            color: #aaa6b9;
+            font-size: 14px;
+        }
+
+        .profile {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #8b5cf6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 0 18px rgba(139, 92, 246, 0.25);
+        }
+
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #121121;
+            border: 1px solid #29253d;
+            border-radius: 14px;
+            padding: 20px;
+            transition: 0.25s;
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: #6541a5;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .stat-icon {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card h2 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .stat-card p {
+            margin: 6px 0 0;
+            color: #9995aa;
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           MAIN GRID
+        ========================= */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 22px;
+        }
+
+        .panel {
+            background: #121121;
+            border: 1px solid #29253d;
+            border-radius: 14px;
+            padding: 24px;
+            transition: 0.25s;
+        }
+
+        .panel:hover {
+            border-color: #3b3158;
+        }
+
+        .panel h2 {
+            margin: 0 0 20px;
+            font-size: 20px;
+        }
+
+
+        /* =========================
+           CAREER READINESS
+        ========================= */
+
+        .progress-number {
+            font-size: 44px;
+            font-weight: bold;
+            color: #9b6cff;
+        }
+
+        .progress-text {
+            color: #aaa6b9;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #29253d;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #8b5cf6;
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+
+
+        /* =========================
+           SKILLS
+        ========================= */
+
+        .skill {
+            margin-bottom: 20px;
+        }
+
+        .skill:last-child {
+            margin-bottom: 0;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            font-size: 14px;
+            gap: 20px;
+        }
+
+        .skill-name {
+            font-weight: bold;
+        }
+
+        .skill-level-text {
+            color: #aaa6b9;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .skill-percentage {
+            color: #a98aff;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .skill-bar {
+            height: 8px;
+            background: #29253d;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: #8b5cf6;
+            border-radius: 10px;
+        }
+
+
+        /* =========================
+           COURSES
+        ========================= */
+
+        .course {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #28253a;
+        }
+
+        .course:last-child {
+            border-bottom: none;
+        }
+
+        .course-name {
+            font-size: 15px;
+        }
+
+        .course-level {
+            color: #a98aff;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .course-btn {
+            text-decoration: none;
+            color: white;
+            background: #6d42c7;
+            padding: 8px 14px;
+            border-radius: 7px;
+            font-size: 12px;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .course-btn:hover {
+            background: #8b5cf6;
+        }
+
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .action {
+            text-decoration: none;
+            color: #ddd9e8;
+            border: 1px solid #302b47;
+            padding: 18px 12px;
+            border-radius: 10px;
+            text-align: center;
+            transition: 0.25s;
+            font-size: 14px;
+        }
+
+        .action:hover {
+            background: #1d1730;
+            border-color: #7549c9;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 190px;
+            }
+
+            .main-content {
+                margin-left: 190px;
+                width: calc(100% - 190px);
+                padding: 25px;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 18px;
+            }
+
+            .topbar {
+                margin-bottom: 22px;
+            }
+
+            .welcome h1 {
+                font-size: 22px;
+            }
+
+            .welcome p {
+                font-size: 13px;
+            }
+
+            .profile {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+
+            .actions {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .course {
+                align-items: flex-start;
+            }
+        }
+        /* ===== DASHBOARD PANEL HEIGHT FIX ===== */
+
+        .dashboard-grid {
+        align-items: start !important;
+        }
+
+     .dashboard-grid .panel {
+     height: auto !important;
+     align-self: start !important;
+      }
+
+      /* Career Readiness */
+     .dashboard-grid .panel:first-child {
+      min-height: 0 !important;
+       }  
+
+      /* Skills cards clean look */
+       .dashboard-grid .skill {
+        background: #10101d;
+        border: 1px solid #29253d;
+        border-radius: 14px;
+        padding: 18px;
+        margin-bottom: 14px;
+        }
+
+        .dashboard-grid .skill:last-child {
+        margin-bottom: 0;
+        }
+        /* ===== COMPACT SKILLS DESIGN ===== */
+
+.dashboard-grid .skill {
+    padding: 14px 16px !important;
+    margin-bottom: 10px !important;
+    border-radius: 12px !important;
+}
+
+.dashboard-grid .skill-header {
+    margin-bottom: 6px !important;
+}
+
+.dashboard-grid .skill-name {
+    font-size: 15px;
+}
+
+.dashboard-grid .skill-level-text {
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.dashboard-grid .skill-percentage {
+    font-size: 12px;
+}
+
+.dashboard-grid .skill-bar {
+    height: 6px !important;
+}
+/* ===== RECOMMENDED COURSES & QUICK ACTIONS ===== */
+
+.course-card {
+    padding: 18px !important;
+    margin-bottom: 12px !important;
+    border-radius: 14px !important;
+}
+
+.course-card h3 {
+    font-size: 18px !important;
+    margin-bottom: 10px !important;
+}
+
+.course-card .course-level {
+    padding: 7px 14px !important;
+    font-size: 13px !important;
+}
+
+.course-card .view-btn {
+    padding: 10px 18px !important;
+    border-radius: 10px !important;
+}
+
+.quick-action {
+    min-height: 105px !important;
+    border-radius: 14px !important;
+    transition: 0.3s ease !important;
+}
+
+.quick-action:hover {
+    transform: translateY(-3px);
+    border-color: #8b5cf6 !important;
+    background: #151226 !important;
+}
+/* ===== FIX CAREER READINESS EMPTY SPACE ===== */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 22px;
+    align-items: start !important;
+}
+
+.dashboard-grid > .panel {
+    align-self: start !important;
+}
+
+/* Career Readiness panel */
+.dashboard-grid > .panel:first-child {
+    height: fit-content !important;
+    min-height: 0 !important;
+}
+/* =========================================
+   DASHBOARD - FINAL BALANCED DESIGN
+========================================= */
+
+.dashboard-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+    align-items: start !important;
+}
+
+.dashboard-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+}
+
+.dashboard-column .panel {
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    align-self: stretch !important;
+}
+
+
+/* =========================================
+   CAREER READINESS
+========================================= */
+
+.dashboard-column:first-child .panel:first-child {
+    min-height: 210px !important;
+}
+
+.progress-number {
+    display: block;
+    font-size: 42px;
+    margin-bottom: 5px;
+}
+
+.progress-text {
+    margin-bottom: 18px;
+}
+
+.progress-bar {
+    margin-top: 12px;
+}
+
+
+/* =========================================
+   MY SKILLS
+========================================= */
+
+.dashboard-column:last-child .panel:first-child {
+    padding-bottom: 20px;
+}
+
+.dashboard-grid .skill {
+    padding: 14px 16px !important;
+    margin-bottom: 10px !important;
+    border-radius: 12px !important;
+}
+
+.dashboard-grid .skill-header {
+    margin-bottom: 6px !important;
+}
+
+
+/* =========================================
+   RECOMMENDED COURSES
+========================================= */
+
+.dashboard-column:first-child .panel:nth-child(2) {
+    padding-bottom: 18px;
+}
+
+.dashboard-column:first-child .panel:nth-child(2) .course {
+    background: #10101d;
+    border: 1px solid #29253d;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #29253d;
+}
+
+.dashboard-column:first-child .panel:nth-child(2) .course:last-child {
+    margin-bottom: 0;
+}
+
+.dashboard-column:first-child .panel:nth-child(2) .course-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dashboard-column:first-child .panel:nth-child(2) .course-level {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 11px;
+    background: #30225a;
+    border-radius: 20px;
+}
+
+.dashboard-column:first-child .panel:nth-child(2) .course-btn {
+    padding: 9px 17px;
+    border-radius: 9px;
+}
+
+
+/* =========================================
+   QUICK ACTIONS
+========================================= */
+
+.dashboard-column:last-child .panel:nth-child(2) {
+    padding-bottom: 22px;
+}
+
+.actions {
+    gap: 14px !important;
+}
+
+.action {
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .dashboard-column {
+        gap: 18px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .dashboard-column {
+        gap: 15px;
+    }
+
+    .dashboard-column:first-child .panel:first-child {
+        min-height: 0 !important;
+    }
+
+    .course {
+        gap: 10px;
+    }
+}
+/* ===== LOGOUT ===== */
+
+.logout-link {
+    margin-top: 18px !important;
+    border-top: 1px solid #29253d;
+    padding-top: 18px !important;
+    color: #c7c3d4 !important;
+}
+
+.logout-link:hover {
+    background: #241b3d !important;
+    color: #ffffff !important;
+    border-left: 3px solid #8b5cf6;
+}
+/* ===== LOGOUT CONFIRMATION MODAL ===== */
+
+.logout-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.logout-modal.show {
+    display: flex;
+}
+
+.logout-box {
+    position: relative;
+    width: 460px;
+    max-width: 90%;
+    padding: 35px;
+    text-align: center;
+    background: #11101f;
+    border: 1px solid #4b3b72;
+    border-radius: 22px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+}
+
+.logout-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: #aaa;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.logout-close:hover {
+    color: #fff;
+}
+
+.logout-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #21183d;
+    border: 1px solid #6541a5;
+    border-radius: 50%;
+    color: #b99aff;
+    font-size: 27px;
+}
+
+.logout-box h2 {
+    margin: 0 0 12px;
+    color: #fff;
+    font-size: 26px;
+}
+
+.logout-box p {
+    margin: 0 0 28px;
+    color: #aaa6b9;
+    font-size: 15px;
+}
+
+.logout-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+.logout-cancel,
+.logout-confirm {
+    padding: 11px 23px;
+    border-radius: 9px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.logout-cancel {
+    color: #ddd9e8;
+    background: #252238;
+    border: 1px solid #403761;
+}
+
+.logout-cancel:hover {
+    background: #302a48;
+}
+
+.logout-confirm {
+    color: #fff;
+    background: #6d42c7;
+    border: 1px solid #6d42c7;
+}
+
+.logout-confirm:hover {
+    background: #8b5cf6;
+}
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard">
+
+    <!-- MOBILE MENU BUTTON -->
+
+        <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">
+            ☰
+        </button>
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="dashboard-logo">
+            Skill<span>Bridge</span>
+        </div>
+
+        <p class="menu-title">
+            Main Menu
+        </p>
+
+        <a href="#" class="active">
+            🏠 Dashboard
+        </a>
+
+        <a href="/skills">
+            💻 My Skills
+        </a>
+
+        <a href="/courses">
+            📚 Courses
+        </a>
+
+        <a href="/jobs">
+            💼 Jobs
+        </a>
+
+        <a href="/applications">
+            📄 Applications
+        </a>
+
+        <a href="/progress">
+            📈 Progress
+        </a>
+
+        <p class="menu-title" style="margin-top: 30px;">
+            Account
+        </p>
+
+        <a href="/profile">
+            👤 Profile
+        </a>
+
+        <a href="#" class="logout-link" onclick="openLogoutModal(event)">
+            ↩ Logout
+        </a>
+
+    </aside>
+<!-- MOBILE SIDEBAR OVERLAY -->
+
+<div
+    class="mobile-sidebar-overlay"
+    onclick="closeMobileSidebar()">
+</div>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOP BAR -->
+
+        <div class="topbar">
+
+            <div class="welcome">
+
+                <h1>
+                    Welcome Back, {{ user_name.split()[0] }}! 👋
+                </h1>
+
+                <p>
+                    Track your skills and build your career.
+                </p>
+
+            </div>
+
+
+            <div class="profile">
+                {{ user_name[0] | upper }}
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= STAT CARDS ================= -->
+
+        <div class="stats">
+
+
+            <!-- Career Readiness -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🎯
+                </div>
+
+                <h2>
+                    {{ career_readiness }}%
+                </h2>
+
+                <p>
+                    Career Readiness
+                </p>
+
+            </div>
+
+
+            <!-- Skills -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    💻
+                </div>
+
+                <h2>
+                    {{ skills_count }}
+                </h2>
+
+                <p>
+                    Skills Tracked
+                </p>
+
+            </div>
+
+
+            <!-- Courses -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📚
+                </div>
+
+                <h2>
+                    {{ courses_count }}
+                </h2>
+
+                <p>
+                    Courses Available
+                </p>
+
+            </div>
+
+
+            <!-- Jobs -->
+
+            <a href="/jobs" class="stat-card">
+
+                <div class="stat-icon">
+                    💼
+                </div>
+
+                <h2>
+                    {{ jobs_count }}
+                </h2>
+
+                <p>
+                    Job Opportunities
+                </p>
+
+            </a>
+
+
+        </div>
+
+
+
+<!-- CAREER GOAL -->
+<div class="panel career-goal-panel">
+    <div class="panel-header">
+        <h2>🎯 Career Goal</h2>
+        <div class="goal-actions">
+      <a href="/career-goal" class="goal-edit-btn">Edit</a>
+
+
+        <form id="deleteGoalForm" action="/delete-career-goal" method="POST">
+            <button type="button" class="goal-delete-btn" onclick="openGoalDeleteModal()">
+             Delete
+            </button>
+        </form>
+    </div>
+ </div>
+
+    {% if goal %}
+        <div class="career-goal-content">
+            <div class="goal-icon">🚀</div>
+            <div>
+                <p class="goal-label">Your Current Goal</p>
+                <h3>{{ goal.goal_name }}</h3>
+            </div>
+        </div>
+    {% else %}
+        <div class="career-goal-empty">
+            <div class="goal-icon">🎯</div>
+            <div>
+                <h3>No Career Goal Set</h3>
+                <p>Set a career goal to track your career journey.</p>
+                <a href="/career-goal" class="set-goal-btn">
+                    Set Career Goal
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<!-- ================= DASHBOARD GRID ================= -->
+
+<div class="dashboard-grid">
+
+
+    <!-- ================= LEFT COLUMN ================= -->
+        
+    <div class="dashboard-column">
+
+
+        <!-- ================= CAREER READINESS ================= -->
+
+        <div class="panel">
+
+                 <div class="panel-title-row">
+
+            <h2>
+                🎯 Career Readiness
+            </h2>
+
+            <div class="dashboard-sticker">
+                🚀
+            </div>
+
+        </div>
+
+            <span class="progress-number">
+                {{ career_readiness }}%
+            </span>
+
+            <p class="progress-text">
+                You're making good progress toward your career goals.
+            </p>
+
+            <div class="progress-bar">
+
+                <div class="progress-fill"
+                     data-readiness="{{ career_readiness }}">
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= RECOMMENDED COURSES ================= -->
+
+        <div class="panel">
+
+            <h2>
+                📚 Recommended Courses
+            </h2>
+
+
+            {% if recommended_courses %}
+
+                {% for course in recommended_courses %}
+
+                <div class="course">
+
+                    <div>
+
+                        <div class="course-name">
+                            {{ course.course_name }}
+                        </div>
+
+                        <div class="course-level">
+                            {{ course.level }}
+                        </div>
+
+                    </div>
+
+
+                    {% if course.course_link %}
+
+                        <a href="{{ course.course_link }}"
+                           target="_blank"
+                           class="course-btn">
+                            View
+                        </a>
+
+                    {% else %}
+
+                        <a href="/courses"
+                           class="course-btn">
+                            View
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+                {% endfor %}
+
+
+            {% else %}
+
+                <p style="color: #aaa6b9;">
+                    Add some skills to get recommended courses.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= RIGHT COLUMN ================= -->
+
+    <div class="dashboard-column">
+
+
+        <!-- ================= MY SKILLS ================= -->
+
+        <div class="panel">
+
+            <h2>
+                💻 My Skills
+            </h2>
+
+
+            {% if user_skill_data %}
+
+                {% for skill in user_skill_data %}
+
+                <div class="skill">
+
+                    <div class="skill-header">
+
+                        <div>
+
+                            <div class="skill-name">
+                                {{ skill.skill_name }}
+                            </div>
+
+                            <div class="skill-level-text">
+
+                                {% if skill.skill_level == "Beginner" %}
+
+                                    Beginner • 40%
+
+                                {% elif skill.skill_level == "Intermediate" %}
+
+                                    Intermediate • 70%
+
+                                {% else %}
+
+                                    Advanced • 90%
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="skill-percentage">
+
+                            {% if skill.skill_level == "Beginner" %}
+
+                                40%
+
+                            {% elif skill.skill_level == "Intermediate" %}
+
+                                70%
+
+                            {% else %}
+
+                                90%
+
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="skill-bar">
+
+                        {% if skill.skill_level == "Beginner" %}
+
+                            <div class="skill-fill"
+                                 style="width: 40%;">
+                            </div>
+
+                        {% elif skill.skill_level == "Intermediate" %}
+
+                            <div class="skill-fill"
+                                 style="width: 70%;">
+                            </div>
+
+                        {% else %}
+
+                            <div class="skill-fill"
+                                 style="width: 90%;">
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+
+            {% else %}
+
+                <p style="color: #aaa6b9;">
+                    No skills added yet.
+                    Add skills from My Skills.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- ================= QUICK ACTIONS ================= -->
+
+        <div class="panel">
+
+            <h2>
+                ⚡ Quick Actions
+            </h2>
+
+
+            <div class="actions">
+
+
+                <a href="/skills" class="action">
+                    ➕
+                    <br>
+                    Add Skill
+                </a>
+
+
+                <a href="/courses" class="action">
+                    🔎
+                    <br>
+                    Explore Courses
+                </a>
+
+
+                <a href="/jobs" class="action">
+                    💼
+                    <br>
+                    Find Jobs
+                </a>
+
+
+                <a href="/progress" class="action">
+                    📊
+                    <br>
+                    View Progress
+                </a>
+
+
+                <a href="/applications" class="action">
+                    📋
+                    <br>
+                    Applications
+                </a>
+                 
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- ================= PROGRESS SCRIPT ================= -->
+
+<script>
+
+    const progressFill =
+        document.querySelector(".progress-fill");
+
+    if (progressFill) {
+
+        const readiness =
+            progressFill.dataset.readiness;
+
+        progressFill.style.width =
+            readiness + "%";
+
+    }
+    function openGoalDeleteModal() {
+    document.getElementById("goalDeleteModal").classList.add("show");
+}
+
+function closeGoalDeleteModal() {
+    document.getElementById("goalDeleteModal").classList.remove("show");
+}
+
+function confirmGoalDelete() {
+    document.getElementById("deleteGoalForm").submit();
+}
+function openLogoutModal(event) {
+    event.preventDefault();
+    document.getElementById("logoutModal").classList.add("show");
+}
+
+function closeLogoutModal() {
+    document.getElementById("logoutModal").classList.remove("show");
+}
+function toggleMobileSidebar() {
+
+    const sidebar =
+        document.querySelector(".sidebar");
+
+    const overlay =
+        document.querySelector(".mobile-sidebar-overlay");
+
+    sidebar.classList.toggle("mobile-open");
+    overlay.classList.toggle("show");
+}
+
+
+function closeMobileSidebar() {
+
+    const sidebar =
+        document.querySelector(".sidebar");
+
+    const overlay =
+        document.querySelector(".mobile-sidebar-overlay");
+
+    sidebar.classList.remove("mobile-open");
+    overlay.classList.remove("show");
+}
+</script>
+
+<!-- CAREER GOAL DELETE MODAL -->
+
+<div id="goalDeleteModal" class="goal-delete-modal">
+
+    <div class="goal-delete-box">
+
+        <button class="goal-modal-close" onclick="closeGoalDeleteModal()">
+            ×
+        </button>
+
+        <div class="goal-warning-icon">
+            !
+        </div>
+
+        <h2>Remove Career Goal?</h2>
+
+        <p>
+            Are you sure you want to remove your career goal?
+        </p>
+
+        <div class="goal-modal-actions">
+
+            <button
+                type="button"
+                class="goal-keep-btn"
+                onclick="closeGoalDeleteModal()">
+                Keep Goal
+            </button>
+
+            <button
+                type="button"
+                class="goal-confirm-delete"
+                onclick="confirmGoalDelete()">
+                Delete Goal
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- LOGOUT CONFIRMATION MODAL -->
+
+<div id="logoutModal" class="logout-modal">
+
+    <div class="logout-box">
+
+        <button
+            class="logout-close"
+            onclick="closeLogoutModal()">
+            ×
+        </button>
+
+        <div class="logout-icon">
+            ↩
+        </div>
+
+        <h2>Logout?</h2>
+
+        <p>
+            Are you sure you want to logout from SkillBridge?
+        </p>
+
+        <div class="logout-actions">
+
+            <button
+                type="button"
+                class="logout-cancel"
+                onclick="closeLogoutModal()">
+                Cancel
+            </button>
+
+            <a
+                href="/logout"
+                class="logout-confirm">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+
+</html>

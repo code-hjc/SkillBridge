@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillBridge | Jobs</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #090914;
+        }
+
+        .jobs-page {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top right,
+                rgba(109, 66, 199, 0.14),
+                transparent 30%),
+                #090914;
+            color: #ffffff;
+            font-family: "Times New Roman", serif;
+            padding: 45px 60px;
+        }
+
+        .jobs-container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .jobs-header {
+            margin-bottom: 30px;
+        }
+
+        .jobs-header h1 {
+            font-size: 30px;
+            margin: 0 0 8px;
+        }
+
+        .jobs-header p {
+            margin: 0;
+            color: #aaa6b9;
+            font-size: 15px;
+        }
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .job-card {
+            background: rgba(18, 17, 33, 0.95);
+            border: 1px solid #29253d;
+            border-radius: 15px;
+            padding: 25px;
+            transition: 0.25s;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+            border-color: #6d42c7;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .job-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .job-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: #211638;
+            font-size: 22px;
+        }
+
+        .job-type {
+            padding: 6px 11px;
+            border-radius: 20px;
+            background: #211a35;
+            color: #b99cff;
+            font-size: 12px;
+            height: fit-content;
+        }
+
+        .job-card h2 {
+            font-size: 19px;
+            margin: 0 0 6px;
+        }
+
+        .company {
+            color: #b99cff;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .job-description {
+            color: #9d98aa;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .job-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 20px;
+        }
+
+        .info-tag {
+            padding: 7px 10px;
+            border-radius: 7px;
+            background: #0d0d19;
+            border: 1px solid #29253d;
+            color: #c9c5d4;
+            font-size: 12px;
+        }
+
+        .job-button {
+            display: block;
+            width: 100%;
+            padding: 11px;
+            border-radius: 8px;
+            background: #6d42c7;
+            color: #ffffff;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.25s;
+        }
+
+        .job-button:hover {
+            background: #7d4ddd;
+        }
+
+        .no-jobs {
+            text-align: center;
+            padding: 50px;
+            color: #8f8a9f;
+            background: #121121;
+            border: 1px solid #29253d;
+            border-radius: 15px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #a98aff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 750px) {
+            .jobs-page {
+                padding: 30px 20px;
+            }
+
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .job-message {
+    margin-bottom: 20px;
+    padding: 12px 15px;
+    border: 1px solid #6b3045;
+    border-radius: 9px;
+    background: #2a1620;
+    color: #ff9db5;
+    font-size: 14px;
+    text-align: center;
+}
+    </style>
+</head>
+
+<body>
+
+<section class="jobs-page">
+
+    <div class="jobs-container">
+
+        <div class="jobs-header">
+            <h1>💼 Job Opportunities</h1>
+            <p>
+                Explore career opportunities based on your skills.
+            </p>
+        </div>
+
+
+ {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="job-message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+        {% if jobs %}
+
+        <div class="jobs-grid">
+
+            {% for job in jobs %}
+
+            <div class="job-card">
+
+                <div class="job-top">
+
+                    <div class="job-icon">
+                        💼
+                    </div>
+
+                    {% if job.job_type %}
+                    <span class="job-type">
+                        {{ job.job_type }}
+                    </span>
+                    {% endif %}
+
+                </div>
+
+
+                <h2>
+                    {{ job.job_title }}
+                </h2>
+
+                <div class="company">
+                    {{ job.company_name }}
+                </div>
+
+
+                <p class="job-description">
+                    {{ job.description or "Explore this opportunity and learn more about the role." }}
+                </p>
+
+
+                <div class="job-info">
+
+                    {% if job.location %}
+                    <span class="info-tag">
+                        📍 {{ job.location }}
+                    </span>
+                    {% endif %}
+
+                    {% if job.salary %}
+                    <span class="info-tag">
+                        💰 {{ job.salary }}
+                    </span>
+                    {% endif %}
+
+                    {% if job.skill_name %}
+                    <span class="info-tag">
+                        🛠 {{ job.skill_name }}
+                    </span>
+                    {% endif %}
+
+                </div>
+
+
+                <form action="/apply/{{ job.job_id }}" method="POST">
+
+                      <button type="submit" class="job-button">
+                      Apply Now →
+                      </button>
+
+                </form>
+               {% if job.application_link %}
+                    <a href="{{ job.application_link }}"
+                    target="_blank"
+                    class="job-button"
+                    style="margin-top: 10px;">
+                    View Opportunity →
+                </a>
+              {% endif %}
+
+               </div>
+           {% endfor %}
+
+             </div>
+
+           {% else %}
+
+           <div class="no-jobs">
+    <h2>No Job Opportunities Available</h2>
+    <p>
+        Job opportunities will appear here once they are added.
+    </p>
+</div>
+
+{% endif %}
+                 
+
+        <a href="/dashboard" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</section>
+
+</body>
+</html>

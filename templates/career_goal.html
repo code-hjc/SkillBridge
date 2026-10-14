@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Career Goal | SkillBridge</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Skill<span>Bridge</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/skills">My Skills</a>
+            <a href="/courses">Courses</a>
+            <a href="/jobs">Jobs</a>
+        </div>
+
+        <div class="auth-buttons">
+            <a href="/logout" class="login-btn">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <section class="career-goal-page">
+
+        <div class="career-goal-card">
+
+            <p class="career-goal-tag">🎯 CAREER PLANNING</p>
+
+            <h1>Set Your Career Goal</h1>
+
+            <p class="career-goal-description">
+                Choose the career you want to build towards.
+                Your goal will help you track your learning journey.
+            </p>
+
+
+            {% if goal %}
+
+            <div class="current-goal">
+
+                <span>Current Career Goal</span>
+
+                <h2>🎯 {{ goal.goal_name }}</h2>
+
+            </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                <label for="goal_name">
+                    Career Goal
+                </label>
+
+                <input
+                    type="text"
+                    id="goal_name"
+                    name="goal_name"
+                    placeholder="e.g. Python Developer"
+                    value="{{ goal.goal_name if goal else '' }}"
+                    required
+                >
+
+                <button type="submit" class="primary-btn">
+                    {% if goal %}
+                        Update Goal
+                    {% else %}
+                        Save Career Goal
+                    {% endif %}
+                </button>
+
+            </form>
+
+
+            <a href="/dashboard" class="back-link">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+        <p>© 2026 SkillBridge | BCA Minor Project</p>
+    </footer>
+
+</body>
+
+</html>

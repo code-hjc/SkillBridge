@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Applications - SkillBridge</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .applications-page {
+            min-height: 100vh;
+            padding: 40px;
+            background: #0f0b1f;
+            color: white;
+        }
+
+        .applications-header {
+            margin-bottom: 30px;
+        }
+
+        .applications-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .applications-header p {
+            color: #aaa;
+        }
+
+        .application-card {
+            background: #1a1530;
+            border: 1px solid #302850;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .application-card h2 {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .company {
+            color: #b9a7ff;
+            margin-bottom: 15px;
+        }
+
+        .application-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .info-item {
+            background: #241d3d;
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: #ddd;
+            font-size: 14px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: #30245c;
+            color: #c9baff;
+            font-size: 13px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 10px 18px;
+            background: #6c4cff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .empty-applications {
+            background: #1a1530;
+            border: 1px solid #302850;
+            border-radius: 15px;
+            padding: 50px;
+            text-align: center;
+            color: #aaa;
+        }
+
+        .cancel-btn {
+            margin-top: 15px;
+            padding: 9px 16px;
+            border: 1px solid #4a3b68;
+            border-radius: 8px;
+            background: #241d3d;
+            color: #c9baff;
+            font-family: "Times New Roman", serif;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            background: #30245c;
+            color: white;
+        }
+        /* ===== Applications Premium UI ===== */
+
+.application-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        145deg,
+        rgba(25, 21, 45, 0.95),
+        rgba(14, 13, 27, 0.95)
+    );
+    border: 1px solid #302850;
+    border-radius: 18px;
+    transition: transform 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+.application-card::before {
+    content: "";
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: rgba(109, 66, 199, 0.09);
+    filter: blur(50px);
+    top: -70px;
+    right: -50px;
+    pointer-events: none;
+}
+
+.application-card:hover {
+    transform: translateY(-7px);
+    border-color: #6d42c7;
+    box-shadow: 0 15px 35px rgba(109, 66, 199, 0.18);
+}
+
+.application-card h2,
+.application-card .company,
+.application-card .application-info,
+.application-card .status,
+.application-card form {
+    position: relative;
+    z-index: 1;
+}
+
+.status {
+    box-shadow: 0 4px 12px rgba(109, 66, 199, 0.12);
+}
+
+.cancel-btn {
+    transition: transform 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.cancel-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(109, 66, 199, 0.15);
+}
+/* ===== Cancel Confirmation Modal ===== */
+
+.cancel-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(5, 5, 12, 0.78);
+    backdrop-filter: blur(6px);
+}
+
+.cancel-modal.show {
+    display: flex;
+}
+
+.cancel-modal-box {
+    position: relative;
+    width: 100%;
+    max-width: 430px;
+    padding: 30px;
+    border: 1px solid #302850;
+    border-radius: 18px;
+    background: linear-gradient(
+        145deg,
+        #1a1730,
+        #0f0e1c
+    );
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    text-align: center;
+    animation: modalEnter 0.2s ease;
+}
+
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.94) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    border: none;
+    background: transparent;
+    color: #aaa6b9;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: white;
+}
+
+.modal-icon {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+.cancel-modal-box h2 {
+    margin: 0 0 10px;
+    font-size: 22px;
+}
+
+.cancel-modal-box p {
+    margin: 0;
+    color: #aaa6b9;
+    line-height: 1.6;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.keep-btn,
+.confirm-cancel-btn {
+    padding: 10px 15px;
+    border-radius: 9px;
+    font-family: "Times New Roman", serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.2s ease,
+                background 0.2s ease;
+}
+
+.keep-btn {
+    border: 1px solid #302850;
+    background: #242036;
+    color: #ddd7ef;
+}
+
+.confirm-cancel-btn {
+    border: 1px solid #6d42c7;
+    background: #6d42c7;
+    color: white;
+}
+
+.keep-btn:hover,
+.confirm-cancel-btn:hover {
+    transform: translateY(-2px);
+}
+
+.confirm-cancel-btn:hover {
+    background: #7d4ddd;
+}
+
+@media (max-width: 520px) {
+    .modal-actions {
+        flex-direction: column;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+<div class="applications-page">
+
+    <div class="applications-header">
+        <h1>📋 My Applications</h1>
+        <p>Track the jobs you have applied for.</p>
+    </div>
+
+    {% if applications %}
+
+        {% for application in applications %}
+
+        <div class="application-card">
+
+            <h2>{{ application.job_title }}</h2>
+
+            <div class="company">
+                🏢 {{ application.company_name }}
+            </div>
+
+            <div class="application-info">
+
+                <span class="info-item">
+                    📍 {{ application.location }}
+                </span>
+
+                <span class="info-item">
+                    💼 {{ application.job_type }}
+                </span>
+
+                <span class="info-item">
+                    💰 {{ application.salary }}
+                </span>
+
+                <span class="info-item">
+                    📅 {{ application.application_date }}
+                </span>
+
+            </div>
+
+    <span class="status">
+                {{ application.status }}
+    </span>
+
+    <form action="/cancel-application/{{ application.application_id }}" method="POST">
+
+        <button type="button"
+            class="cancel-btn"
+            onclick="openCancelModal('{{ application.application_id }}')">
+            Cancel Application
+        </button>
+
+    </form>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-applications">
+            <h2>📭 No Applications Yet</h2>
+
+            <p>
+                You haven't applied for any jobs yet.
+                Explore available opportunities and apply for a job.
+            </p>
+        </div>
+
+    {% endif %}
+
+    <a href="/dashboard" class="back-btn">
+        ← Back to Dashboard
+    </a>
+
+</div>
+<!-- Cancel Confirmation Modal -->
+
+<div id="cancelModal" class="cancel-modal">
+
+    <div class="cancel-modal-box">
+
+        <button type="button"
+                class="modal-close"
+                onclick="closeCancelModal()">
+            ×
+        </button>
+
+        <div class="modal-icon">
+            ⚠
+        </div>
+
+        <h2>Cancel Application?</h2>
+
+        <p>
+            Are you sure you want to cancel this application?
+        </p>
+
+        <div class="modal-actions">
+
+            <button type="button"
+                    class="keep-btn"
+                    onclick="closeCancelModal()">
+                Keep Application
+            </button>
+
+            <form id="cancelModalForm" method="POST">
+                <button type="submit"
+                        class="confirm-cancel-btn">
+                    Cancel Application
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+    function openCancelModal(applicationId) {
+        const modal = document.getElementById("cancelModal");
+        const form = document.getElementById("cancelModalForm");
+
+        form.action = "/cancel-application/" + applicationId;
+
+        modal.classList.add("show");
+    }
+
+    function closeCancelModal() {
+        const modal = document.getElementById("cancelModal");
+
+        modal.classList.remove("show");
+    }
+
+    document.getElementById("cancelModal").addEventListener("click", function (event) {
+        if (event.target === this) {
+            closeCancelModal();
+        }
+    });
+</script>
+</body>
+</html>

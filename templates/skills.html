@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillBridge | My Skills</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #090914;
+        }
+
+        .skills-page {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top right, rgba(109, 66, 199, 0.14), transparent 30%),
+                #090914;
+            color: #ffffff;
+            font-family: "Times New Roman", serif;
+            padding: 45px 60px;
+        }
+
+        .skills-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .skills-header {
+            margin-bottom: 30px;
+        }
+
+        .skills-header h1 {
+            font-size: 30px;
+            margin: 0 0 8px;
+        }
+
+        .skills-header p {
+            color: #aaa6b9;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .skills-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .skills-card {
+            background: rgba(18, 17, 33, 0.95);
+            border: 1px solid #29253d;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .skills-card h2 {
+            font-size: 21px;
+            margin: 0 0 8px;
+        }
+
+        .card-description {
+            color: #8f8a9f;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ddd9e8;
+            font-size: 15px;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 13px 15px;
+            border-radius: 9px;
+            border: 1px solid #302b47;
+            background: #0d0d19;
+            color: #ffffff;
+            font-family: "Times New Roman", serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group select:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.10);
+        }
+
+        .save-skill-btn {
+            width: 100%;
+            border: none;
+            padding: 13px 20px;
+            border-radius: 9px;
+            background: #6d42c7;
+            color: #ffffff;
+            font-family: "Times New Roman", serif;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .save-skill-btn:hover {
+            background: #7d4ddd;
+            transform: translateY(-2px);
+        }
+
+        .skill-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 13px;
+            background: #0d0d19;
+            border: 1px solid #29253d;
+            border-radius: 11px;
+        }
+
+        .skill-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #201638;
+            font-size: 20px;
+        }
+
+        .skill-details {
+            flex: 1;
+        }
+
+        .skill-details h3 {
+            margin: 0 0 5px;
+            font-size: 16px;
+        }
+
+        .skill-details p {
+            margin: 0;
+            color: #9d98aa;
+            font-size: 13px;
+        }
+
+        .skill-level {
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #241b3b;
+            color: #b99cff;
+            font-size: 12px;
+        }
+        
+        .remove-skill-btn {
+        padding: 6px 10px;
+        border: none;
+        border-radius: 20px;
+        background: #3a1830;
+        color: #ff8fa3;
+        font-family: "Times New Roman", serif;
+        font-size: 12px;
+        cursor: pointer;
+        }
+
+        .remove-skill-btn:hover {
+        background: #5a2040;
+        color: #ffffff;
+        }
+
+        .empty-skills {
+            text-align: center;
+            padding: 40px 15px;
+            color: #8f8a9f;
+            font-size: 14px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #a98aff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 800px) {
+            .skills-page {
+                padding: 30px 20px;
+            }
+
+            .skills-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<section class="skills-page">
+
+    <div class="skills-container">
+
+        <div class="skills-header">
+            <h1>💻 My Skills</h1>
+            <p>Build your skill profile and track your current abilities.</p>
+        </div>
+
+        <div class="skills-layout">
+
+            <!-- ADD SKILL -->
+            <div class="skills-card">
+
+                <h2>➕ Add New Skill</h2>
+
+                <p class="card-description">
+                    Select a skill and choose your current level.
+                </p>
+
+                <form method="POST" action="/skills">
+
+                    <div class="form-group">
+                        <label for="skill">Select Skill</label>
+
+                        <select id="skill" name="skill_id" required>
+
+                            <option value="">
+                                Choose a skill
+                            </option>
+
+                            {% for skill in skills %}
+                                <option value="{{ skill.skill_id }}">
+                                    {{ skill.skill_name }}
+                                </option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="skill_level">
+                            Skill Level
+                        </label>
+
+                        <select id="skill_level"
+                                name="skill_level"
+                                required>
+
+                            <option value="">
+                                Choose your level
+                            </option>
+
+                            <option value="Beginner">
+                                Beginner
+                            </option>
+
+                            <option value="Intermediate">
+                                Intermediate
+                            </option>
+
+                            <option value="Advanced">
+                                Advanced
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <button type="submit"
+                            class="save-skill-btn">
+                        Save Skill →
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- CURRENT SKILLS -->
+            <div class="skills-card">
+
+              <h2>📊 Your Skills</h2>
+
+              <p class="card-description">
+              Skills you have added to your profile.</p>
+
+               {% if user_skills %}
+
+               {% for skill in user_skills %}
+
+               <div class="skill-info">
+
+               <div class="skill-icon">
+                💡
+           </div>
+
+             <div class="skill-details">
+                <h3>{{ skill.skill_name }}</h3>
+
+                <p>
+                    {{ skill.description or "Skill added to your profile." }}
+                </p>
+             </div>
+
+            <span class="skill-level">
+                {{ skill.skill_level }}
+            </span>
+            <form method="POST" action="/remove-skill/{{ skill.skill_id }}">
+            <button type="submit" class="remove-skill-btn">
+            Remove
+             </button>
+            </form>
+        </div>
+
+        {% endfor %}
+
+        {% else %}
+
+        <div class="empty-skills">
+            No skills added yet.
+            <br>
+            Add your first skill using the form.
+        </div>
+
+            {% endif %}
+
+          </div>
+        </div>
+
+        <a href="/dashboard" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</section>
+
+</body>
+</html>

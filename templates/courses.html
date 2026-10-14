@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillBridge | Courses</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #090914;
+        }
+
+        .courses-page {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top right,
+                rgba(109, 66, 199, 0.14),
+                transparent 30%),
+                #090914;
+            color: #ffffff;
+            font-family: "Times New Roman", serif;
+            padding: 45px 60px;
+        }
+
+        .courses-container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .courses-header {
+            margin-bottom: 30px;
+        }
+
+        .courses-header h1 {
+            font-size: 30px;
+            margin: 0 0 8px;
+        }
+
+        .courses-header p {
+            margin: 0;
+            color: #aaa6b9;
+            font-size: 15px;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .course-card {
+            background: rgba(18, 17, 33, 0.95);
+            border: 1px solid #29253d;
+            border-radius: 15px;
+            padding: 24px;
+            transition: 0.25s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: #6d42c7;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .course-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: #211638;
+            font-size: 22px;
+            margin-bottom: 18px;
+        }
+
+        .course-card h2 {
+            font-size: 19px;
+            margin: 0 0 10px;
+        }
+
+        .course-description {
+            color: #9d98aa;
+            font-size: 14px;
+            line-height: 1.5;
+            min-height: 63px;
+            margin-bottom: 18px;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .course-tag {
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #211a35;
+            color: #b99cff;
+            font-size: 12px;
+        }
+
+        .course-button {
+            display: block;
+            width: 100%;
+            padding: 11px;
+            border-radius: 8px;
+            background: #6d42c7;
+            color: #ffffff;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.25s;
+        }
+
+        .course-button:hover {
+            background: #7d4ddd;
+        }
+
+        .no-courses {
+            text-align: center;
+            padding: 50px;
+            color: #8f8a9f;
+            background: #121121;
+            border: 1px solid #29253d;
+            border-radius: 15px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #a98aff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: #ffffff;
+        }
+
+        @media (max-width: 950px) {
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+            .courses-page {
+                padding: 30px 20px;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<section class="courses-page">
+
+    <div class="courses-container">
+
+        <div class="courses-header">
+            <h1>📚 Courses</h1>
+            <p>
+                Explore courses and improve your skills for your career.
+            </p>
+        </div>
+
+
+        {% if courses %}
+
+        <div class="courses-grid">
+
+            {% for course in courses %}
+
+            <div class="course-card">
+
+                <div class="course-icon">
+                    🎓
+                </div>
+
+                <h2>
+                    {{ course.course_name }}
+                </h2>
+
+                <p class="course-description">
+                    {{ course.description or "Improve your knowledge with this course." }}
+                </p>
+
+                <div class="course-meta">
+
+                    {% if course.level %}
+                    <span class="course-tag">
+                        {{ course.level }}
+                    </span>
+                    {% endif %}
+
+                    {% if course.duration %}
+                    <span class="course-tag">
+                        ⏱ {{ course.duration }}
+                    </span>
+                    {% endif %}
+
+                    {% if course.skill_name %}
+                    <span class="course-tag">
+                        {{ course.skill_name }}
+                    </span>
+                    {% endif %}
+
+                </div>
+
+
+                {% if course.course_link %}
+
+                <a href="{{ course.course_link }}"
+                   target="_blank"
+                   class="course-button">
+                    View Course →
+                </a>
+
+                {% else %}
+
+                <span class="course-button">
+                    Course Details
+                </span>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="no-courses">
+            <h2>No Courses Available</h2>
+            <p>
+                Courses will appear here once they are added.
+            </p>
+        </div>
+
+        {% endif %}
+
+
+        <a href="/dashboard" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</section>
+
+</body>
+</html>

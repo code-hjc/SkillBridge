@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillBridge | Profile</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            margin: 0;
+            background: #090914;
+            color: white;
+            font-family: "Times New Roman", serif;
+        }
+
+        .profile-page {
+            min-height: 100vh;
+            padding: 50px;
+            background:
+                radial-gradient(circle at top right,
+                rgba(109, 66, 199, 0.15),
+                transparent 30%),
+                #090914;
+        }
+
+        .profile-container {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .profile-header {
+            margin-bottom: 30px;
+        }
+
+        .profile-header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .profile-header p {
+            color: #aaa6b9;
+            font-size: 15px;
+        }
+
+        .profile-card {
+            background: rgba(18, 17, 33, 0.95);
+            border: 1px solid #29253d;
+            border-radius: 18px;
+            padding: 35px;
+        }
+
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #6d42c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-box {
+            background: #0d0d19;
+            border: 1px solid #29253d;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .info-box label {
+            display: block;
+            color: #8f8a9f;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .info-box span {
+            font-size: 16px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 11px 18px;
+            border-radius: 8px;
+            background: #6d42c7;
+            color: white;
+            text-decoration: none;
+        }
+  
+.profile-intro {
+    margin-bottom: 25px;
+}
+
+.profile-intro h2 {
+    margin: 0 0 6px;
+    font-size: 24px;
+}
+
+.profile-intro p {
+    margin: 0;
+    color: #aaa6b9;
+    font-size: 14px;
+}
+
+        .back-btn:hover {
+            background: #7d4ddd;
+        }
+
+        @media (max-width: 700px) {
+            .profile-page {
+                padding: 30px 20px;
+            }
+
+            .profile-info {
+                grid-template-columns: 1fr;
+            }
+        }
+.button-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.button-group .back-btn {
+    margin-top: 0;
+}
+
+    </style>
+</head>
+
+<body>
+
+<section class="profile-page">
+
+    <div class="profile-container">
+
+        <div class="profile-header">
+            <h1>👤 My Profile</h1>
+            <p>View your SkillBridge account information.</p>
+        </div>
+
+      <div class="profile-card">
+
+    <div class="profile-sticker">
+        👨‍💻
+    </div>
+
+    <div class="profile-avatar">
+        {{ user.full_name[0] | upper }}
+    </div>
+            <div class="profile-intro">
+                <h2>{{ user.full_name }}</h2>
+                <p>BCA Student • {{ user.college }}</p>
+                </div>
+
+            <div class="profile-info">
+
+                <div class="info-box">
+                    <label>Full Name</label>
+                    <span>{{ user.full_name }}</span>
+                </div>
+
+                <div class="info-box">
+                    <label>Email Address</label>
+                    <span>{{ user.email }}</span>
+                </div>
+                
+                <div class="info-box">
+                    <label>College / University</label>
+                    <span>{{ user.college }}</span>
+                </div>
+                <div class="info-box">
+                    <label>Course</label>
+                    <span>{{ user.course }}</span>
+                </div>
+            
+            </div>
+
+        <div class="profile-info">
+
+            <div class="info-box">
+                <label>Skills Tracked</label>
+                <span>{{ skills_count }}</span>
+            </div>
+
+            <div class="info-box">
+                <label>Career Readiness</label>
+                <span>{{ career_readiness }}%</span>
+            </div>
+
+            <div class="info-box">
+                <label>Account Created</label>
+                <span>{{ user.created_at }}</span>
+            </div>
+        </div>
+   
+        <div class="button-group">
+
+            <a href="/edit-profile" class="back-btn">
+                ✏ Edit Profile
+            </a>
+
+            <a href="/dashboard" class="back-btn">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

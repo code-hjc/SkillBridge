@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Progress - SkillBridge</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #090914;
+            color: #ffffff;
+            font-family: "Times New Roman", serif;
+        }
+
+        /* =========================
+           MAIN PAGE
+        ========================= */
+
+        .progress-page {
+            min-height: 100vh;
+            padding: 45px 25px 60px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(109, 66, 199, 0.16),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 80%,
+                    rgba(139, 92, 246, 0.10),
+                    transparent 28%
+                ),
+                #090914;
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .progress-header {
+            margin-bottom: 30px;
+            animation: fadeDown 0.7s ease;
+        }
+
+        .progress-header h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+            color: #ffffff;
+        }
+
+        .progress-header p {
+            margin: 0;
+            color: #aaa6b9;
+            font-size: 15px;
+        }
+
+        /* =========================
+           COMMON CARD
+        ========================= */
+
+        .progress-card {
+            position: relative;
+            width: 100%;
+            margin-bottom: 24px;
+            padding: 28px;
+
+            background: rgba(18, 17, 33, 0.94);
+            border: 1px solid #29253d;
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.25);
+
+            transition:
+                transform 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+
+            animation: fadeUp 0.7s ease;
+        }
+
+        .progress-card::before {
+            content: "";
+
+            position: absolute;
+            width: 180px;
+            height: 180px;
+
+            top: -80px;
+            right: -60px;
+
+            border-radius: 50%;
+
+            background: rgba(109, 66, 199, 0.12);
+
+            filter: blur(45px);
+
+            pointer-events: none;
+        }
+
+        .progress-card:hover {
+            transform: translateY(-3px);
+            border-color: #6d42c7;
+
+            box-shadow:
+                0 18px 45px rgba(109, 66, 199, 0.12);
+        }
+
+        .progress-card h2 {
+            position: relative;
+
+            margin: 0 0 22px;
+
+            font-size: 21px;
+            color: #ffffff;
+        }
+
+        /* =========================
+           CAREER GOAL
+        ========================= */
+
+        .career-goal-content,
+        .goal-empty {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            gap: 18px;
+
+            padding: 20px;
+
+            background: #10101d;
+            border: 1px solid #29253d;
+
+            border-radius: 15px;
+
+            transition: 0.3s ease;
+        }
+
+        .career-goal-content:hover,
+        .goal-empty:hover {
+            border-color: #493875;
+            background: #131223;
+        }
+
+        .goal-icon {
+            width: 56px;
+            height: 56px;
+            min-width: 56px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #21183d,
+                    #30205a
+                );
+
+            border: 1px solid #493875;
+
+            font-size: 26px;
+
+            box-shadow:
+                0 0 20px rgba(109, 66, 199, 0.18);
+        }
+
+        .goal-label {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #9b7cff;
+
+            font-size: 13px;
+        }
+
+        .goal-details h3,
+        .goal-empty h3 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+        }
+
+        .goal-details p,
+        .goal-empty p {
+            margin: 7px 0 0;
+
+            color: #aaa6b9;
+
+            font-size: 13px;
+        }
+
+        .set-goal-btn {
+            display: inline-block;
+
+            margin-top: 12px;
+
+            padding: 9px 16px;
+
+            background: #6d42c7;
+            color: #ffffff;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            transition: 0.25s ease;
+        }
+
+        .set-goal-btn:hover {
+            background: #8b5cf6;
+
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           CAREER READINESS
+        ========================= */
+
+        .readiness {
+            text-align: center;
+        }
+
+        .readiness-number {
+            position: relative;
+
+            margin: 5px 0 20px;
+
+            font-size: 58px;
+            font-weight: bold;
+
+            color: #b9a7ff;
+
+            text-shadow:
+                0 0 25px rgba(155, 124, 255, 0.30);
+        }
+
+        .readiness-status {
+            margin-bottom: 18px;
+
+            color: #aaa6b9;
+
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            position: relative;
+
+            width: 100%;
+            height: 15px;
+
+            background: #242036;
+
+            border-radius: 30px;
+
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #6d42c7,
+                    #8b5cf6,
+                    #b9a7ff
+                );
+
+            box-shadow:
+                0 0 15px rgba(139, 92, 246, 0.35);
+
+            transition:
+                width 1.5s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        /* =========================
+           SKILL PROGRESS
+        ========================= */
+
+        .skill-item {
+            position: relative;
+
+            margin-bottom: 14px;
+            padding: 18px;
+
+            background: #10101d;
+
+            border: 1px solid #29253d;
+
+            border-radius: 15px;
+
+            transition: 0.3s ease;
+        }
+
+        .skill-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .skill-item:hover {
+            transform: translateX(4px);
+
+            background: #141225;
+
+            border-color: #6d42c7;
+
+            box-shadow:
+                0 8px 25px rgba(109, 66, 199, 0.10);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 11px;
+        }
+
+        .skill-name {
+            color: #ffffff;
+
+            font-size: 17px;
+
+            font-weight: bold;
+        }
+
+        .skill-level {
+            color: #b9a7ff;
+
+            font-size: 13px;
+
+            white-space: nowrap;
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 9px;
+
+            background: #242036;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #6d42c7,
+                    #9b7cff
+                );
+
+            box-shadow:
+                0 0 12px rgba(139, 92, 246, 0.25);
+
+            transition:
+                width 1.2s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-progress {
+            padding: 28px;
+
+            text-align: center;
+
+            color: #aaa6b9;
+
+            background: #10101d;
+
+            border: 1px solid #29253d;
+
+            border-radius: 15px;
+        }
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+
+            margin-top: 2px;
+
+            padding: 11px 18px;
+
+            color: #ffffff;
+
+            background: #6d42c7;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.25s ease;
+
+            animation: fadeUp 1s ease;
+        }
+
+        .back-btn:hover {
+            background: #8b5cf6;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(109, 66, 199, 0.22);
+        }
+
+        /* =========================
+           ANIMATIONS
+        ========================= */
+
+        @keyframes fadeDown {
+
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .progress-page {
+                padding: 30px 18px 45px;
+            }
+
+            .progress-header h1 {
+                font-size: 27px;
+            }
+
+            .progress-card {
+                padding: 22px 18px;
+            }
+
+            .readiness-number {
+                font-size: 48px;
+            }
+
+            .career-goal-content,
+            .goal-empty {
+                align-items: flex-start;
+            }
+
+            .goal-icon {
+                width: 48px;
+                height: 48px;
+                min-width: 48px;
+
+                font-size: 22px;
+            }
+
+            .goal-details h3,
+            .goal-empty h3 {
+                font-size: 17px;
+            }
+
+            .skill-header {
+                gap: 10px;
+            }
+
+            .skill-name {
+                font-size: 15px;
+            }
+
+            .skill-level {
+                font-size: 12px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<section class="progress-page">
+
+    <div class="progress-container">
+
+        <!-- HEADER -->
+
+        <div class="progress-header">
+
+            <h1>📊 My Progress</h1>
+
+            <p>
+                Track your skills and career readiness.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             CAREER GOAL
+        ========================= -->
+
+        <div class="progress-card">
+
+            <h2>🎯 Career Goal</h2>
+
+            {% if goal %}
+
+                <div class="career-goal-content">
+
+                    <div class="goal-icon">
+                        🚀
+                    </div>
+
+                    <div class="goal-details">
+
+                        <span class="goal-label">
+                            Your Current Goal
+                        </span>
+
+                        <h3>
+                            {{ goal.goal_name }}
+                        </h3>
+
+                        <p>
+                            Keep improving your skills to move closer
+                            to your career goal.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <div class="goal-empty">
+
+                    <div class="goal-icon">
+                        🎯
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            No Career Goal Set
+                        </h3>
+
+                        <p>
+                            Set a career goal to track your career journey.
+                        </p>
+
+                        <a
+                            href="/career-goal"
+                            class="set-goal-btn">
+                            Set Career Goal
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =========================
+             CAREER READINESS
+        ========================= -->
+
+        <div class="progress-card readiness">
+
+            <h2>
+                🎯 Career Readiness
+            </h2>
+
+            <div
+                class="readiness-number"
+                data-readiness="{{ career_readiness }}">
+                0%
+            </div>
+
+            <div class="readiness-status">
+                Keep building your skills and experience.
+            </div>
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    data-readiness="{{ career_readiness }}">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             SKILL PROGRESS
+        ========================= -->
+
+        <div class="progress-card">
+
+            <h2>
+                💻 Skill Progress
+            </h2>
+
+            {% if skills %}
+
+                {% for skill in skills %}
+
+                    <div class="skill-item">
+
+                        <div class="skill-header">
+
+                            <span class="skill-name">
+                                {{ skill.skill_name }}
+                            </span>
+
+                            <span class="skill-level">
+
+                                {% if skill.skill_level == "Beginner" %}
+
+                                    Beginner — 40%
+
+                                {% elif skill.skill_level == "Intermediate" %}
+
+                                    Intermediate — 70%
+
+                                {% else %}
+
+                                    Advanced — 90%
+
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="skill-bar">
+
+                            {% if skill.skill_level == "Beginner" %}
+
+                                <div
+                                    class="skill-fill"
+                                    style="width: 40%;">
+                                </div>
+
+                            {% elif skill.skill_level == "Intermediate" %}
+
+                                <div
+                                    class="skill-fill"
+                                    style="width: 70%;">
+                                </div>
+
+                            {% else %}
+
+                                <div
+                                    class="skill-fill"
+                                    style="width: 90%;">
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty-progress">
+
+                    No skills added yet.
+                    Add skills from My Skills.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <a
+            href="/dashboard"
+            class="back-btn">
+
+            ← Back to Dashboard
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<script>
+
+    /* =========================
+       CAREER READINESS ANIMATION
+    ========================= */
+
+    const progressFill =
+        document.querySelector(".progress-fill");
+
+    const readinessNumber =
+        document.querySelector(".readiness-number");
+
+
+    if (progressFill && readinessNumber) {
+
+        const readiness =
+            Number(progressFill.dataset.readiness) || 0;
+
+
+        /* Progress bar */
+
+        setTimeout(() => {
+
+            progressFill.style.width =
+                readiness + "%";
+
+        }, 300);
+
+
+        /* Number animation */
+
+        let current = 0;
+
+        const duration = 1200;
+
+        const startTime = performance.now();
+
+
+        function animateNumber(currentTime) {
+
+            const elapsed =
+                currentTime - startTime;
+
+            const progress =
+                Math.min(elapsed / duration, 1);
+
+
+            current =
+                Math.floor(readiness * progress);
+
+
+            readinessNumber.textContent =
+                current + "%";
+
+
+            if (progress < 1) {
+
+                requestAnimationFrame(
+                    animateNumber
+                );
+
+            } else {
+
+                readinessNumber.textContent =
+                    readiness + "%";
+            }
+
+        }
+
+
+        requestAnimationFrame(
+            animateNumber
+        );
+
+    }
+
+
+    /* =========================
+       SKILL BAR ANIMATION
+    ========================= */
+
+    const skillFills =
+        document.querySelectorAll(".skill-fill");
+
+
+    skillFills.forEach((bar, index) => {
+
+        const targetWidth =
+            bar.style.width;
+
+        bar.style.width = "0%";
+
+
+        setTimeout(() => {
+
+            bar.style.width =
+                targetWidth;
+
+        }, 450 + (index * 100));
+
+    });
+
+</script>
+
+</body>
+
+</html>

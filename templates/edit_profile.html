@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Profile - SkillBridge</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body {
+            margin: 0;
+            background: #090914;
+            color: white;
+            font-family: "Times New Roman", serif;
+        }
+
+        .edit-page {
+            min-height: 100vh;
+            padding: 50px;
+            background:
+                radial-gradient(circle at top right,
+                rgba(109, 66, 199, 0.15),
+                transparent 30%),
+                #090914;
+        }
+
+        .edit-container {
+            max-width: 650px;
+            margin: auto;
+        }
+
+        .edit-header {
+            margin-bottom: 30px;
+        }
+
+        .edit-header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .edit-header p {
+            color: #aaa6b9;
+            font-size: 15px;
+        }
+
+        .edit-card {
+            background: rgba(18, 17, 33, 0.95);
+            border: 1px solid #29253d;
+            border-radius: 18px;
+            padding: 35px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #aaa6b9;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            background: #0d0d19;
+            border: 1px solid #29253d;
+            border-radius: 9px;
+            color: white;
+            font-family: "Times New Roman", serif;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #6d42c7;
+        }
+
+        .email-note {
+            color: #777287;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .save-btn,
+        .cancel-btn {
+            padding: 11px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: "Times New Roman", serif;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            border: none;
+            background: #6d42c7;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background: #7d4ddd;
+        }
+
+        .cancel-btn {
+            background: #241d3d;
+            border: 1px solid #302850;
+            color: #c9baff;
+        }
+
+        .cancel-btn:hover {
+            background: #30245c;
+            color: white;
+        }
+
+        @media (max-width: 700px) {
+            .edit-page {
+                padding: 30px 20px;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+        }
+ /* ===== Edit Profile Premium Upgrade ===== */
+
+.edit-card {
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.edit-card::before {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(109, 66, 199, 0.10);
+    filter: blur(60px);
+    top: -90px;
+    right: -60px;
+    pointer-events: none;
+}
+
+.form-group {
+    position: relative;
+    z-index: 1;
+}
+
+.form-group input {
+    transition: border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+}
+
+.form-group input:focus {
+    border-color: #6d42c7;
+    box-shadow: 0 0 0 3px rgba(109, 66, 199, 0.12);
+    background: #111020;
+}
+
+.save-btn,
+.cancel-btn {
+    transition: transform 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.save-btn:hover,
+.cancel-btn:hover {
+    transform: translateY(-2px);
+}
+    </style>
+</head>
+
+<body>
+
+<section class="edit-page">
+
+    <div class="edit-container">
+
+        <div class="edit-header">
+            <h1>✏ Edit Profile</h1>
+            <p>Update your personal and college information.</p>
+        </div>
+
+        <div class="edit-card">
+
+            <div class="edit-profile-sticker">
+             ✨
+            </div>
+
+                <form method="POST">
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input
+                        type="text"
+                        name="full_name"
+                        value="{{ user.full_name }}"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input
+                        type="email"
+                        value="{{ user.email }}"
+                        readonly>
+
+                    <div class="email-note">
+                        Email address cannot be changed.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>College / University</label>
+                    <input
+                        type="text"
+                        name="college"
+                        value="{{ user.college or '' }}"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>Course</label>
+                    <input
+                        type="text"
+                        name="course"
+                        value="{{ user.course or 'BCA' }}"
+                        required>
+                </div>
+
+                <div class="button-row">
+
+                    <button type="submit" class="save-btn">
+                        Save Changes
+                    </button>
+
+                    <a href="/profile" class="cancel-btn">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>
