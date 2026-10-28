@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillBridge | Student Career Platform</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Skill<span>Bridge</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+        </div>
+
+        <div class="auth-buttons">
+            <a href="/login" class="login-btn">Login</a>
+            <a href="/signup" class="signup-btn">Sign Up</a>
+        </div>
+
+    </nav>
+
+
+    <!-- ================= HERO SECTION ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <p class="tagline">
+                🚀 YOUR CAREER. YOUR FUTURE.
+            </p>
+
+            <h1>
+                Build Your Skills.
+                <span>Shape Your Career.</span>
+            </h1>
+
+            <p class="description">
+                SkillBridge helps students track their skills, set career goals,
+                explore opportunities and build a clear learning roadmap.
+            </p>
+
+            <div class="buttons">
+
+                <a href="/signup" class="primary-btn">
+                    Get Started →
+                </a>
+
+                <a href="#features" class="secondary-btn">
+                    Explore Features
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- Career Readiness Card -->
+
+        <div class="career-card">
+
+            <div class="card-header">
+
+                <span>Career Readiness</span>
+
+                <span>76%</span>
+
+            </div>
+
+
+            <div class="progress">
+
+                <div class="progress-bar"></div>
+
+            </div>
+
+
+            <div class="skills">
+
+                <div class="skill">
+                    <span>HTML</span>
+                    <span>90%</span>
+                </div>
+
+                <div class="skill">
+                    <span>CSS</span>
+                    <span>80%</span>
+                </div>
+
+                <div class="skill">
+                    <span>JavaScript</span>
+                    <span>60%</span>
+                </div>
+
+                <div class="skill">
+                    <span>Python</span>
+                    <span>70%</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FEATURES SECTION ================= -->
+
+    <section class="features" id="features">
+
+        <h2>
+            Everything You Need to Grow 🚀
+        </h2>
+
+
+        <div class="feature-container">
+
+
+            <!-- Career Goals -->
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    🎯
+                </div>
+
+                <h3>
+                    Career Goals
+                </h3>
+
+                <p>
+                    Set your career goal and create a clear path towards it.
+                </p>
+
+            </div>
+
+
+            <!-- Skill Tracking -->
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    📊
+                </div>
+
+                <h3>
+                    Skill Tracking
+                </h3>
+
+                <p>
+                    Track your skills and monitor your learning progress.
+                </p>
+
+            </div>
+
+
+            <!-- Job Opportunities -->
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    💼
+                </div>
+
+                <h3>
+                    Job Opportunities
+                </h3>
+
+                <p>
+                    Discover job opportunities that match your skills
+                    and career goals.
+                </p>
+
+            </div>
+
+
+            <!-- Internships -->
+
+            <div class="feature-card">
+
+                <div class="icon">
+                    🎓
+                </div>
+
+                <h3>
+                    Internships
+                </h3>
+
+                <p>
+                    Track your internship experience and career opportunities
+                    in one place.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ABOUT SECTION ================= -->
+
+    <section class="about-section" id="about">
+
+        <div class="about-content">
+
+
+            <div class="about-text">
+
+                <p class="about-tag">
+                    ABOUT SKILLBRIDGE
+                </p>
+
+                <h2>
+                    Build Skills. Discover Opportunities.
+                </h2>
+
+                <p>
+                    SkillBridge is a student career development platform
+                    designed to help students track their skills, explore
+                    courses, discover job opportunities and manage their
+                    career journey in one place.
+                </p>
+
+                <p>
+                    It connects learning with real career opportunities
+                    and helps students understand their progress and
+                    improve their skills step by step.
+                </p>
+
+            </div>
+
+
+            <!-- About Card -->
+
+            <div class="about-card">
+
+                <div class="about-icon">
+                    🎓
+                </div>
+
+                <h3>
+                    Made for Students
+                </h3>
+
+                <p>
+                    Learn, track and grow your career with SkillBridge.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 SkillBridge | BCA Minor Project
+        </p>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
